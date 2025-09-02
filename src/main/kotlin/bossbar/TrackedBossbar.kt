@@ -10,12 +10,12 @@ data class TrackedBossBar(
 )
 
 fun TrackedBossBar.show(player: Player) {
-    val previousBar = BossBarManager.get(this.id)
+    val previousBar = BossBarManager.get(player, this.id)
     if (previousBar != null) {
         player.hideBossBar(previousBar.bar)
         MinecraftServer.getBossBarManager().destroyBossBar(previousBar.bar)
     }
 
     player.showBossBar(this.bar)
-    BossBarManager.set(this)
+    BossBarManager.set(player, this)
 }

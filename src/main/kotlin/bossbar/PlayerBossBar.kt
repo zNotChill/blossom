@@ -12,13 +12,20 @@ class PlayerBossBar(
     }
 
     fun update(block: BossBarBuilder.() -> Unit) {
-        val updated = BossBarManager.update(tracked.id, block) ?: return
+        val updated = BossBarManager.update(player, tracked.id, block) ?: return
 
-        val previousBar = BossBarManager.get(tracked.id)
+        val previousBar = BossBarManager.get(player, tracked.id)
         if (previousBar != null) {
             player.hideBossBar(previousBar.bar)
             MinecraftServer.getBossBarManager().destroyBossBar(previousBar.bar)
         }
         updated.show(player)
+    }
+
+    fun hide() {
+        val trackedBar = BossBarManager.get(player, tracked.id) ?: return
+
+        player.hideBossBar(trackedBar.bar)
+        BossBarManager.hide(player, tracked.id)
     }
 }

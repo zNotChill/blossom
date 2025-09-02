@@ -1,4 +1,4 @@
-package me.znotchill.blossom
+package me.znotchill.blossom.extensions
 
 import me.znotchill.blossom.bossbar.BossBarManager
 import me.znotchill.blossom.bossbar.PlayerBossBar
@@ -10,14 +10,14 @@ fun Player.bossBar(tracked: TrackedBossBar): PlayerBossBar {
 }
 
 fun Player.bossBar(id: String): PlayerBossBar? {
-    val tracked = BossBarManager.get(id) ?: return null
+    val tracked = BossBarManager.get(this, id) ?: return null
     return PlayerBossBar(this, tracked)
 }
 
 fun Player.hasBossBar(id: String): Boolean {
-    return BossBarManager.get(id) != null
+    return BossBarManager.get(this, id) != null
 }
 
 fun Player.hasBossBar(tracked: TrackedBossBar): Boolean {
-    return BossBarManager.get(tracked.id) != null
+    return BossBarManager.get(this, tracked.id) != null
 }
