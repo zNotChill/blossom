@@ -11,6 +11,7 @@ My attempt at making Minestom more Kotlin idiomatic.
 - [Commands](#commands)
 - [Bossbars](#bossbars)
 - [Dialogs](#dialogs)
+- [Components](#components)
 
 ## Install
 
@@ -248,4 +249,62 @@ Aswell as hiding a bossbar:
 ```kt
 val readyUpBar = player.bossBar("ready_up")
 readyUpBar?.hide()
+```
+
+## Components
+
+Blossom makes it simpler and cleaner to use Adventure components.
+
+You can use `space()` inside a component builder to simply add a blank space.
+
+`tooltip()` is a normal text builder.
+
+Inside a `text()` block, you have access to the properties:
+- color
+- bold
+- italic
+- underline
+- strikethrough
+- obfuscate
+
+`onClick` blocks provide you with most click events:
+- runCommand(String)
+- suggestCommand(String)
+- openUrl(String)
+- changePage(Int)
+- copyToClipboard(String)
+- showDialog(DialogLike)
+
+#### Text blocks cannot be chained within one another.
+
+### Component Example
+
+```kt
+component {
+    text("You got a friend request!")
+    space() // literally just adds a blank space
+    text("[Accept]") {
+        color = Color(255, 255, 85)
+
+        onClick {
+            runCommand("friends accept zNotChill")
+        }
+
+        tooltip("Click to accept") {
+            underline = true
+        }
+    }
+    space()
+    text("[Deny]") {
+        color = Color(255, 85, 85)
+
+        onClick {
+            runCommand("friends deny zNotChill")
+        }
+
+        tooltip("Click to deny") {
+            underline = true
+        }
+    }
+}
 ```
