@@ -28,7 +28,7 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
 
-            group
+            groupId = "me.znotchill"
             artifactId = "blossom"
             version
         }
