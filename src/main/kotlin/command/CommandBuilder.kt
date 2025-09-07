@@ -79,6 +79,12 @@ class CommandBuilder(val command: Command) {
         return ArgumentBuilder(arg).apply(block).argument
     }
 
+    fun syntax(handler: Player.() -> Unit = {}) {
+        command.addSyntax({ sender, _ ->
+            if (sender is Player) handler(sender)
+        })
+    }
+
     inline fun <reified A> syntax(
         argA: Argument<A>,
         crossinline handler: Player.(A) -> Unit
