@@ -3,6 +3,110 @@
 
 My attempt at making Minestom more Kotlin idiomatic.
 
+## Contents
+
+- [Scheduler](#scheduler)
+- [Time](#time)
+- [Dialogs](#dialogs)
+- [Commands](#commands)
+- [Bossbars](#bossbars)
+- [Dialogs](#dialogs)
+
+## Install
+
+### Maven
+```xml
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+<dependency>
+    <groupId>com.github.znotchill</groupId>
+    <artifactId>blossom</artifactId>
+    <version>LATEST</version>
+</dependency>
+```
+
+### Gradle.kts
+
+```
+repositories {
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    implementation("com.github.znotchill:blossom:LATEST")
+}
+```
+
+## Scheduler
+
+Blossom reimplements Minestom's scheduler system in a very basic way.
+
+The `run` block provides you with the `TaskManager` parameter, allowing you to manage the task from inside the task.
+
+#### Tasks are automatically ran.
+
+### Example Server-wide Task
+
+```kt
+MinecraftServer.getSchedulerManager().task {
+    repeat = 10.ticks
+    run = { task ->
+        if (MinecraftServer.getConnectionManager().onlinePlayers.isNotEmpty()) {
+            task.cancel() // or .stop()
+            println("too many players! canceling task!")
+        } else {
+            println("running task")
+        }
+    }
+}
+```
+
+## Time
+
+Blossom provides utilities for managing time very simply.
+
+You can use any number type (float, double, int, long...) to convert a number to a TimeSpan.
+
+Longhand names are exposed as property getters:
+- millis
+- ticks
+- seconds
+- minutes
+- hours
+- days 
+
+Shorthand names are exposed as function getters:
+- ms()
+- t()
+- s()
+- m()
+- h()
+- d()
+
+All of these, no matter shorthand or longhand, return a Time class, containing conversion options, as detailed below.
+
+You can convert a Time class to a Duration class using `Time#duration`.
+
+### Time Example
+
+```kt
+val ms = 500.ms()
+ms.ticks // returns Time(10, TimeSpan.TICK)
+ms.seconds // returns Time(10, TimeSpan.SECOND)
+
+val ms = 500.millis
+ms.ticks // returns Time(10, TimeSpan.TICK)
+ms.seconds // returns Time(10, TimeSpan.SECOND)
+
+// ALTERNATIVELY, you can choose to convert manually:
+val hours = 5.hours
+hours.convertTo(TimeSpan.SECOND) // returns Time(18000, TimeSpan.SECOND)
+```
+
 ## Dialogs
 
 ### Example Tab Dialog
