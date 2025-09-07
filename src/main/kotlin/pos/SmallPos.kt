@@ -6,34 +6,34 @@ data class SmallPos(
     val chunkX: Int,
     val chunkZ: Int,
     val relX: Short,
-    val relY: Int,
+    val relY: Double,
     val relZ: Short,
 ) {
     val x: Double
-        get() = (chunkX * 16 + relX / 100f).toDouble()
+        get() = (chunkX * 16) + relX / 100.0
 
     val y: Double
-        get() = (relY / 100f).toDouble()
+        get() = relY
 
     val z: Double
-        get() = (chunkZ * 16 + relZ / 100f).toDouble()
+        get() = (chunkZ * 16) + relZ / 100.0
 
-    fun toPos(): Pos {
-        return Pos(
-            x,
-            y,
-            z
-        )
-    }
+    fun toPos(): Pos = Pos(x, y, z)
 
     companion object {
         fun fromPos(pos: Pos): SmallPos {
+            val chunkX = pos.chunkX()
+            val chunkZ = pos.chunkZ()
+
+            val relX = ((pos.x - chunkX * 16) * 100).toInt().toShort()
+            val relZ = ((pos.z - chunkZ * 16) * 100).toInt().toShort()
+
             return SmallPos(
-                pos.chunkX(),
-                pos.chunkZ(),
-                (pos.x % 16).toInt().toShort(),
-                pos.y.toInt(),
-                (pos.z % 16).toInt().toShort(),
+                chunkX,
+                chunkZ,
+                relX,
+                pos.y,
+                relZ
             )
         }
     }
