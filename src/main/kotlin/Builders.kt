@@ -4,8 +4,10 @@ import me.znotchill.blossom.bossbar.BossBarBuilder
 import me.znotchill.blossom.bossbar.TrackedBossBar
 import me.znotchill.blossom.command.CommandBuilder
 import me.znotchill.blossom.component.ComponentBuilder
+import me.znotchill.blossom.scheduler.SchedulerBuilder
 import net.kyori.adventure.text.Component
 import net.minestom.server.command.builder.Command
+import net.minestom.server.timer.SchedulerManager
 
 fun command(name: String, block: CommandBuilder.() -> Unit): Command {
     val cmd = Command(name)
@@ -22,4 +24,10 @@ fun bossBar(id: String, block: BossBarBuilder.() -> Unit): TrackedBossBar {
 fun component(block: ComponentBuilder.() -> Unit): Component {
     val builder = ComponentBuilder().apply(block)
     return builder.build()
+}
+
+fun SchedulerManager.task(block: SchedulerBuilder.() -> Unit): SchedulerBuilder {
+    val builder = SchedulerBuilder(this).apply(block)
+    builder.build()
+    return builder
 }
