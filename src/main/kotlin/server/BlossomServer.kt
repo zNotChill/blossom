@@ -1,0 +1,48 @@
+package me.znotchill.blossom.server
+
+import net.minestom.server.MinecraftServer
+import net.minestom.server.entity.Player
+import net.minestom.server.event.GlobalEventHandler
+import net.minestom.server.extras.MojangAuth
+import net.minestom.server.instance.InstanceManager
+import net.minestom.server.timer.SchedulerManager
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+open class BlossomServer(
+    name: String = "Server"
+) {
+    val logger: Logger = LoggerFactory.getLogger(name)
+    val server: MinecraftServer = MinecraftServer.init()
+
+    val scheduler: SchedulerManager
+        get() = MinecraftServer.getSchedulerManager()
+
+    val eventHandler: GlobalEventHandler
+        get() = MinecraftServer.getGlobalEventHandler()
+
+    val instanceManager: InstanceManager
+        get() = MinecraftServer.getInstanceManager()
+
+    val players: Collection<Player>
+        get() = MinecraftServer.getConnectionManager().onlinePlayers
+
+    fun start(
+        address: String = "0.0.0.0",
+        port: Int = 25565,
+        auth: Boolean = false
+    ) {
+        if (auth) MojangAuth.init()
+
+        preLoad()
+        server.start(address, port)
+        postLoad()
+    }
+
+    open fun preLoad() {}
+    open fun postLoad() {}
+
+    var brand: String
+        get() = MinecraftServer.getBrandName()
+        set(value) = MinecraftServer.setBrandName(value)
+}
