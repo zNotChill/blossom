@@ -6,7 +6,7 @@ My attempt at making Minestom more Kotlin idiomatic.
 ## Contents
 
 - [Server](https://github.com/zNotChill/blossom/wiki/Server)
-- [Scheduler](https://github.com/zNotChill/blossom/wiki/Bossbars)
+- [Scheduler](https://github.com/zNotChill/blossom/wiki/Scheduler)
 - [Time](https://github.com/zNotChill/blossom/wiki/Time)
 - [Dialogs](https://github.com/zNotChill/blossom/wiki/Dialogs)
 - [Commands](https://github.com/zNotChill/blossom/wiki/Commands)
