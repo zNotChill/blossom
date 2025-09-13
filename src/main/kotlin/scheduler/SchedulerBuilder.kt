@@ -1,11 +1,8 @@
 package me.znotchill.blossom.scheduler
 
 import me.znotchill.blossom.extensions.Time
-import me.znotchill.blossom.extensions.ticks
-import me.znotchill.blossom.task
 import net.minestom.server.timer.SchedulerManager
 import net.minestom.server.timer.Task
-import kotlin.time.Duration.Companion.seconds
 
 class SchedulerBuilder(
     val scheduler: SchedulerManager

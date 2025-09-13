@@ -8,13 +8,6 @@ My attempt at making Minestom more Kotlin idiomatic.
 ### Example Tab Dialog
 
 ```kt
-import me.znotchill.blossom.dialog.dialog
-import me.znotchill.blossom.dialog.DialogActionsScope
-import me.znotchill.blossom.dialog.DialogTabsScope
-import me.znotchill.blossom.dialog.DialogType
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.TextColor
-
 val d = dialog {
     type = DialogType.TABS
     title = Component.text("Upgrade Station")
@@ -111,13 +104,6 @@ Blossom makes it very easy to create and track bossbars. The tracking is done au
 
 ### Bossbar Example
 ```kt
-import net.kyori.adventure.bossbar.BossBar
-import me.znotchill.blossom.bossBar
-import me.znotchill.blossom.bossbar.show
-import me.znotchill.blossom.extensions.bossBar
-import me.znotchill.blossom.extensions.hasBossBar
-import net.kyori.adventure.text.Component
-
 if (!player.hasBossBar("ready_up")) {
     val bar = bossBar("ready_up") {
         text = Component.text("Ready Up!")

@@ -178,7 +178,3 @@ fun Dialog.disableTabs() {
         it.active = false
     }
 }
-
-fun dialog(block: DialogBuilder.() -> Unit): Dialog {
-    return DialogBuilder().apply(block).build()
-}
