@@ -29,7 +29,7 @@ My attempt at making Minestom more Kotlin idiomatic.
 <dependency>
     <groupId>me.znotchill</groupId>
     <artifactId>blossom</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
 </dependency>
 ```
 
@@ -41,6 +41,6 @@ repositories {
 }
 
 dependencies {
-    implementation("me.znotchill:blossom:1.4.0")
+    implementation("me.znotchill:blossom:1.4.1")
 }
 ```
