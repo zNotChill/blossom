@@ -85,16 +85,73 @@ class CommandBuilder(val command: Command) {
         })
     }
 
-    fun syntax(
-        vararg args: Argument<*>,
-        handler: Player.(List<Any?>) -> Unit
+    // no, I do not like this
+    inline fun <reified A> syntax(
+        argA: Argument<A>,
+        crossinline handler: Player.(A) -> Unit
     ) {
         command.addSyntax({ sender, ctx ->
-            if (sender is Player) {
-                val values = args.map { ctx[it] }
-                handler(sender, values)
-            }
-        }, *args)
+            if (sender is Player) handler(sender, ctx.get(argA))
+        }, argA)
+    }
+
+    inline fun <reified A, reified B> syntax(
+        argA: Argument<A>,
+        argB: Argument<B>,
+        crossinline handler: Player.(A, B) -> Unit
+    ) {
+        command.addSyntax({ sender, ctx ->
+            if (sender is Player) handler(sender, ctx.get(argA), ctx.get(argB))
+        }, argA, argB)
+    }
+
+    inline fun <reified A, reified B, reified C> syntax(
+        argA: Argument<A>,
+        argB: Argument<B>,
+        argC: Argument<C>,
+        crossinline handler: Player.(A, B, C) -> Unit
+    ) {
+        command.addSyntax({ sender, ctx ->
+            if (sender is Player) handler(sender, ctx.get(argA), ctx.get(argB), ctx.get(argC))
+        }, argA, argB, argC)
+    }
+
+    inline fun <reified A, reified B, reified C, reified D> syntax(
+        argA: Argument<A>,
+        argB: Argument<B>,
+        argC: Argument<C>,
+        argD: Argument<D>,
+        crossinline handler: Player.(A, B, C, D) -> Unit
+    ) {
+        command.addSyntax({ sender, ctx ->
+            if (sender is Player) handler(
+                sender,
+                ctx.get(argA),
+                ctx.get(argB),
+                ctx.get(argC),
+                ctx.get(argD)
+            )
+        }, argA, argB, argC, argD)
+    }
+
+    inline fun <reified A, reified B, reified C, reified D, reified E> syntax(
+        argA: Argument<A>,
+        argB: Argument<B>,
+        argC: Argument<C>,
+        argD: Argument<D>,
+        argE: Argument<E>,
+        crossinline handler: Player.(A, B, C, D, E) -> Unit
+    ) {
+        command.addSyntax({ sender, ctx ->
+            if (sender is Player) handler(
+                sender,
+                ctx.get(argA),
+                ctx.get(argB),
+                ctx.get(argC),
+                ctx.get(argD),
+                ctx.get(argE)
+            )
+        }, argA, argB, argC, argD, argE)
     }
 
     fun build(): Command = command
