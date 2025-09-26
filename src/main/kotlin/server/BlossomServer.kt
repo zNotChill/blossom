@@ -2,6 +2,8 @@ package me.znotchill.blossom.server
 
 import net.minestom.server.Auth
 import net.minestom.server.MinecraftServer
+import net.minestom.server.command.CommandManager
+import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Player
 import net.minestom.server.event.GlobalEventHandler
 import net.minestom.server.instance.InstanceManager
@@ -31,6 +33,13 @@ open class BlossomServer(
 
     val players: Collection<Player>
         get() = MinecraftServer.getConnectionManager().onlinePlayers
+
+    val commands: CommandManager
+        get() = MinecraftServer.getCommandManager()
+
+    fun registerCommand(command: Command) {
+        commands.register(command)
+    }
 
     fun start(
         address: String = "0.0.0.0",

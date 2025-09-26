@@ -85,34 +85,16 @@ class CommandBuilder(val command: Command) {
         })
     }
 
-    inline fun <reified A> syntax(
-        argA: Argument<A>,
-        crossinline handler: Player.(A) -> Unit
+    fun syntax(
+        vararg args: Argument<*>,
+        handler: Player.(List<Any?>) -> Unit
     ) {
         command.addSyntax({ sender, ctx ->
-            if (sender is Player) handler(sender, ctx.get(argA))
-        }, argA)
-    }
-
-    inline fun <reified A, reified B> syntax(
-        argA: Argument<A>,
-        argB: Argument<B>,
-        crossinline handler: Player.(A, B) -> Unit
-    ) {
-        command.addSyntax({ sender, ctx ->
-            if (sender is Player) handler(sender, ctx.get(argA), ctx.get(argB))
-        }, argA, argB)
-    }
-
-    inline fun <reified A, reified B, reified C> syntax(
-        argA: Argument<A>,
-        argB: Argument<B>,
-        argC: Argument<C>,
-        crossinline handler: Player.(A, B, C) -> Unit
-    ) {
-        command.addSyntax({ sender, ctx ->
-            if (sender is Player) handler(sender, ctx.get(argA), ctx.get(argB), ctx.get(argC))
-        }, argA, argB, argC)
+            if (sender is Player) {
+                val values = args.map { ctx[it] }
+                handler(sender, values)
+            }
+        }, *args)
     }
 
     fun build(): Command = command
