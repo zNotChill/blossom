@@ -21,15 +21,15 @@ My attempt at making Minestom more Kotlin idiomatic.
 ### Maven
 ```xml
 <repositories>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
+    <repository>
+        <id>znotchill-releases</id>
+        <url>https://repo.znotchill.me/repository/maven-releases/</url>
+    </repository>
 </repositories>
 <dependency>
     <groupId>me.znotchill</groupId>
     <artifactId>blossom</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.4</version>
 </dependency>
 ```
 
@@ -37,10 +37,10 @@ My attempt at making Minestom more Kotlin idiomatic.
 
 ```
 repositories {
-    maven("https://jitpack.io")
+    maven("https://repo.znotchill.me/repository/maven-releases/")
+    mavenCentral()
 }
-
 dependencies {
-    implementation("me.znotchill:blossom:1.4.1")
+    implementation("me.znotchill:blossom:1.4.4")
 }
 ```

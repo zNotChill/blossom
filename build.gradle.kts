@@ -4,11 +4,10 @@ plugins {
 }
 
 group = "me.znotchill"
-version = "1.4.3"
+version = "1.4.4"
 
 repositories {
     mavenCentral()
-    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -35,6 +34,14 @@ publishing {
     }
 
     repositories {
+        maven {
+            name = "znotchill"
+            url = uri("https://repo.znotchill.me/repository/maven-releases/")
+            credentials {
+                username = findProperty("zRepoUsername") as String? ?: System.getenv("MAVEN_USER")
+                password = findProperty("zRepoPassword") as String? ?: System.getenv("MAVEN_PASS")
+            }
+        }
         mavenLocal()
     }
 }
