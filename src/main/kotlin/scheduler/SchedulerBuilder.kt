@@ -3,6 +3,7 @@ package me.znotchill.blossom.scheduler
 import me.znotchill.blossom.extensions.Time
 import net.minestom.server.timer.SchedulerManager
 import net.minestom.server.timer.Task
+import net.minestom.server.timer.TaskSchedule
 
 class SchedulerBuilder(
     val scheduler: SchedulerManager
@@ -21,7 +22,9 @@ class SchedulerBuilder(
         }
 
         delay?.let { taskBuilder.delay(delay!!.duration) }
-        repeat?.let { taskBuilder.repeat(repeat!!.duration) }
+        repeat?.let { taskBuilder.repeat(
+            TaskSchedule.tick(repeat!!.ticks.time.toInt())
+        ) }
 
         scheduledTask = taskBuilder.schedule()
         return scheduledTask
