@@ -1,3 +1,10 @@
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven("https://redirector.kotlinlang.org/maven/bootstrap")
+    }
+}
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }

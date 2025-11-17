@@ -1,25 +1,33 @@
 plugins {
     `maven-publish`
-    kotlin("jvm") version "2.2.0"
+    kotlin("jvm") version "2.3.0-dev-9673"
 }
 
 group = "me.znotchill"
-version = "1.4.4"
+version = "1.4.7"
 
 repositories {
     mavenCentral()
+    maven("https://repo.znotchill.me/repository/maven-releases/")
+    maven("https://redirector.kotlinlang.org/maven/bootstrap")
+    maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+        content {
+            includeModule("net.minestom", "minestom")
+            includeModule("net.minestom", "testing")
+        }
+    }
 }
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("net.minestom:minestom:2025.09.13-1.21.8")
+    implementation("net.minestom:minestom:2025.10.18-1.21.10")
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 }
 
 publishing {
