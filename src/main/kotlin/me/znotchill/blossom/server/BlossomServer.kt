@@ -1,7 +1,6 @@
 package me.znotchill.blossom.server
 
 import me.znotchill.blossom.server.essentials.classes.Essential
-import me.znotchill.blossom.server.essentials.classes.EssentialConfig
 import me.znotchill.blossom.server.essentials.classes.BareEssential
 import me.znotchill.blossom.server.essentials.classes.BareEssentialEntry
 import net.minestom.server.Auth

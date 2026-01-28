@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("net.minestom:minestom:2025.10.18-1.21.10")
+    implementation("net.minestom:minestom:2025.12.19-1.21.10")
 }
 
 tasks.test {
