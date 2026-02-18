@@ -1,17 +1,18 @@
 package me.znotchill.blossom.server.essentials
 
-import me.znotchill.blossom.component.replaceVars
 import me.znotchill.blossom.extensions.addListener
 import me.znotchill.blossom.server.BlossomServer
 import me.znotchill.blossom.server.essentials.classes.Essential
 import me.znotchill.blossom.server.essentials.classes.EssentialConfig
 import net.kyori.adventure.text.Component
+import net.minestom.server.entity.GameMode
+import net.minestom.server.entity.Player
 import net.minestom.server.event.player.PlayerGameModeRequestEvent
 
 data class GamemodeSwitcherConfig(
     val permissionLevel: Int = 4,
-    val successMessage: Component? = null,
-    val permissionMessage: Component? = null,
+    val successMessage: (Player, GameMode) -> Component = { _, _ -> Component.empty() },
+    val permissionMessage: (Player, GameMode) -> Component = { _, _ -> Component.empty() },
 ) : EssentialConfig
 
 class GamemodeSwitcher(
@@ -22,28 +23,11 @@ class GamemodeSwitcher(
             if (event.player.permissionLevel >= config.permissionLevel) {
                 event.player.setGameMode(event.requestedGameMode)
 
-                config.successMessage?.let { msg ->
-                    val replaced = msg.replaceVars(
-                        mapOf(
-                            "GAMEMODE" to event.requestedGameMode.name,
-                            "PLAYER" to event.player.username
-                        )
-                    )
-
-                    event.player.sendMessage(replaced)
-                }
+                event.player.sendMessage(config.successMessage(event.player, event.requestedGameMode))
                 return@addListener
             }
 
-            config.permissionMessage?.let { msg ->
-                val replaced = msg.replaceVars(
-                    mapOf(
-                        "PLAYER" to event.player.username
-                    )
-                )
-
-                event.player.sendMessage(replaced)
-            }
+            event.player.sendMessage(config.permissionMessage(event.player, event.requestedGameMode))
         }
     }
 }
