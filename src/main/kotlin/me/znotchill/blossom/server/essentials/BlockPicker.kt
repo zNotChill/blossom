@@ -12,12 +12,14 @@ import net.minestom.server.item.Material
 import kotlin.math.roundToInt
 
 data class BlockPickerConfig(
-    val gameModes: List<GameMode> = listOf(GameMode.CREATIVE)
+    var gameModes: List<GameMode> = listOf(GameMode.CREATIVE)
 ) : EssentialConfig
 
 class BlockPicker(
-    override val config: BlockPickerConfig
-) : Essential<BlockPickerConfig> {
+    override val config: BlockPickerConfig = BlockPickerConfig()
+) : Essential<BlockPickerConfig>,
+    EssentialConfig by config
+{
     override fun load(server: BlossomServer) {
         server.eventHandler.addListener<PlayerPickBlockEvent> { event ->
             if (config.gameModes.contains(event.player.gameMode)) {

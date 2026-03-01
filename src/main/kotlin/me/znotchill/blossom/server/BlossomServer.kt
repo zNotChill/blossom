@@ -1,14 +1,13 @@
 package me.znotchill.blossom.server
 
 import me.znotchill.blossom.server.essentials.classes.Essential
-import me.znotchill.blossom.server.essentials.classes.BareEssential
-import me.znotchill.blossom.server.essentials.classes.BareEssentialEntry
 import net.minestom.server.Auth
 import net.minestom.server.MinecraftServer
 import net.minestom.server.advancements.AdvancementManager
 import net.minestom.server.command.CommandManager
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Player
+import net.minestom.server.event.Event
 import net.minestom.server.event.GlobalEventHandler
 import net.minestom.server.instance.InstanceManager
 import net.minestom.server.instance.block.banner.BannerPattern
@@ -22,9 +21,7 @@ import org.slf4j.LoggerFactory
 
 open class BlossomServer(
     name: String = "Server",
-    auth: Boolean = true,
-    useBareEssentials: Boolean = false,
-    bareEssentials: List<BareEssentialEntry> = listOf()
+    auth: Boolean = true
 ) {
     val logger: Logger = LoggerFactory.getLogger(name)
     val authEnum = if (auth) Auth.Online() else Auth.Offline()
@@ -59,6 +56,14 @@ open class BlossomServer(
         commands.register(command)
     }
 
+    inline fun <reified T : Event> BlossomServer.listener(
+        noinline callback: (T) -> Unit
+    ) {
+        this.eventHandler.addListener(T::class.java) { event ->
+            callback(event)
+        }
+    }
+
     fun start(
         address: String = "0.0.0.0",
         port: Int = 25565
@@ -69,7 +74,9 @@ open class BlossomServer(
     }
 
     open fun preLoad() {}
-    open fun postLoad() {}
+    open fun postLoad() {
+        loadEssentials()
+    }
 
     var brand: String
         get() = MinecraftServer.getBrandName()
@@ -78,43 +85,27 @@ open class BlossomServer(
     /**
      * Essentials manager
      */
-    private val essentials = mutableListOf<Essential<*>>()
+    internal val essentials = mutableListOf<Essential<*>>()
 
-    init {
-        if (useBareEssentials) {
-            loadEssentials(bareEssentials)
-        }
+    fun addEssential(essential: Essential<*>) {
+        if (essentials.contains(essential)) return
+        essentials.add(essential)
     }
 
-    private fun loadEssentials(entries: List<BareEssentialEntry>) {
-        val resolved = resolveAll(entries)
+    inline fun <reified T : Essential<*>> bareEssential(
+        noinline block: T.() -> Unit
+    ) {
+        val instance = T::class.java.getDeclaredConstructor().newInstance()
+        instance.block()
 
-        resolved.forEach { entry ->
-            when (entry) {
-                is BareEssentialEntry.Type -> {
-                    val essential = entry.type.create(null)
-                    essential.load(this)
-                    essentials += essential
-                }
-
-                is BareEssentialEntry.Configured -> {
-                    val essential = entry.type.create(entry.config)
-                    essential.load(this)
-                    essentials += essential
-                }
-            }
-        }
+        addEssential(instance)
     }
 
-    private fun resolveAll(entries: List<BareEssentialEntry>): List<BareEssentialEntry> {
-        val hasAll = entries.any {
-            it is BareEssentialEntry.Type && it.type == BareEssential.ALL
-        }
+    private fun loadEssentials() {
+        val currentEssentials = essentials.toList()
 
-        return if (!hasAll) entries else {
-            BareEssential.entries
-                .filter { it != BareEssential.ALL }
-                .map { BareEssentialEntry.Type(it) }
+        currentEssentials.forEach {
+            it.load(this)
         }
     }
 }

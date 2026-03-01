@@ -1,5 +1,6 @@
 package me.znotchill.blossom.extensions
 
+import me.znotchill.blossom.server.BlossomServer
 import net.minestom.server.event.Event
 import net.minestom.server.event.GlobalEventHandler
 

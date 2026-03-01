@@ -2,6 +2,7 @@ package me.znotchill.blossom.extensions
 
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.sound.Sound
+import net.kyori.adventure.text.Component
 import net.minestom.server.coordinate.Point
 import kotlin.collections.forEach
 
@@ -21,5 +22,12 @@ fun Audience.playSounds(sounds: List<Sound>, point: Point) {
     sounds.forEach {
         // what is this ...
         this.playSound(it, point.x(), point.y(), point.z())
+    }
+}
+
+fun Audience.sendMessage(message: Any) {
+    when (message) {
+        is Component -> sendMessage(message)
+        else -> sendMessage(message.toString())
     }
 }
