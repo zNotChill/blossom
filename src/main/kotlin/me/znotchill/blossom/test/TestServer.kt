@@ -1,3 +1,5 @@
+package me.znotchill.blossom.test
+
 import me.znotchill.blossom.server.BlossomServer
 import me.znotchill.blossom.server.essentials.BlockPicker
 import me.znotchill.blossom.server.essentials.GamemodeSwitcher
@@ -7,8 +9,8 @@ import net.minestom.server.event.player.AsyncPlayerConfigurationEvent
 import net.minestom.server.event.player.PlayerLoadedEvent
 import net.minestom.server.instance.Instance
 
-object TestServer : BlossomServer(
-    name = "TestServer",
+internal object TestServer : BlossomServer(
+    name = "me.znotchill.blossom.test.TestServer",
 ) {
     lateinit var instance: Instance
     override fun preLoad() {
@@ -35,6 +37,6 @@ object TestServer : BlossomServer(
     }
 }
 
-fun main() {
+internal fun main() {
     TestServer.start()
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.znotchill"
-version = "1.4.9"
+version = "1.5.1"
 
 repositories {
     mavenCentral()
@@ -26,6 +26,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(25)
 }
