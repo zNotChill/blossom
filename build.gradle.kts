@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.znotchill"
-version = "1.5.1"
+version = "1.5.2"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("net.minestom:minestom:2025.12.19-1.21.10")
+    compileOnly("net.minestom:minestom:2025.12.19-1.21.10")
 }
 
 tasks.test {

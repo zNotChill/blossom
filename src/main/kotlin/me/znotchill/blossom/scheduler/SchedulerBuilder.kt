@@ -1,12 +1,12 @@
 package me.znotchill.blossom.scheduler
 
 import me.znotchill.blossom.extensions.Time
-import net.minestom.server.timer.SchedulerManager
+import net.minestom.server.timer.Scheduler
 import net.minestom.server.timer.Task
 import net.minestom.server.timer.TaskSchedule
 
 class SchedulerBuilder(
-    val scheduler: SchedulerManager
+    val scheduler: Scheduler
 ) {
     var delay: Time? = null
     var repeat: Time? = null
