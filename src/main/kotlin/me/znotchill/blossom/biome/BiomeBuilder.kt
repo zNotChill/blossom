@@ -2,22 +2,47 @@ package me.znotchill.blossom.biome
 
 import net.minestom.server.color.Color
 import net.minestom.server.sound.SoundEvent
+import net.minestom.server.world.attribute.AmbientSounds
+import net.minestom.server.world.attribute.EnvironmentAttribute
+import net.minestom.server.world.attribute.EnvironmentAttributeMap
 import net.minestom.server.world.biome.Biome
 import net.minestom.server.world.biome.BiomeEffects
 
 class BiomeBuilder {
-    var temperature: Float = 0f
-    var downfall: Float = 0f
-    var hasPrecipitation: Boolean = false
+    var temperature: Float = 0.8f
+    var downfall: Float = 0.4f
+    var hasPrecipitation: Boolean = true
     var temperatureModifier: Biome.TemperatureModifier = Biome.TemperatureModifier.NONE
-    var effects: BiomeEffects? = null
+
+    var effects: BiomeEffects = BiomeEffects.DEFAULT
+
+    private val attributeBuilder = EnvironmentAttributeMap.builder()
+
+    /**
+     * Directly set an environment attribute value
+     */
+    fun <T> attribute(attr: EnvironmentAttribute<T>, value: T) {
+        attributeBuilder.set(attr, value)
+    }
+
+    /**
+     * Apply a modifier to an environment attribute
+     */
+    fun <T, Arg> modifyAttribute(
+        attr: EnvironmentAttribute<T>,
+        modifier: EnvironmentAttribute.Modifier<T, Arg>,
+        argument: Arg
+    ) {
+        attributeBuilder.modify(attr, modifier, argument)
+    }
 
     fun build(): Biome {
         return Biome.create(
-            temperature,
-            downfall,
             hasPrecipitation,
+            temperature,
             temperatureModifier,
+            downfall,
+            attributeBuilder.build(),
             effects
         )
     }
@@ -27,50 +52,35 @@ class BiomeBuilder {
             .apply(block)
             .build()
     }
+
+    fun ambientSounds(
+        loop: SoundEvent? = null,
+        mood: AmbientSounds.Mood? = null,
+        additions: List<AmbientSounds.Additions> = emptyList()
+    ) {
+        val ambient = AmbientSounds(
+            loop,
+            mood,
+            additions
+        )
+        this.attribute(EnvironmentAttribute.AMBIENT_SOUNDS, ambient)
+    }
 }
 
 class BiomeEffectsBuilder {
-    var fogColor: Color = Color(0, 0, 0)
-    var skyColor: Color = Color(0, 0, 0)
-    var waterColor: Color = Color(0, 0, 0)
-    var waterFogColor: Color = Color(0, 0, 0)
+    var waterColor: Color = Color(0x3f76e4)
     var foliageColor: Color? = null
+    var dryFoliageColor: Color? = null
     var grassColor: Color? = null
     var grassColorModifier: BiomeEffects.GrassColorModifier = BiomeEffects.GrassColorModifier.NONE
-    var particle: BiomeEffects.Particle? = null
-    var ambientSound: SoundEvent? = null
-    var moodSound: BiomeEffects.MoodSound? = null
-    var additionsSound: BiomeEffects.AdditionsSound? = null
-    var music: MutableList<BiomeEffects.WeightedMusic> = mutableListOf()
-    var musicVolume: Float? = null
-
-    fun moodSound(block: MoodSoundBuilder.() -> Unit) {
-        moodSound = MoodSoundBuilder().apply(block).build()
-    }
-
-    fun additionsSound(block: AdditionsSoundBuilder.() -> Unit) {
-        additionsSound = AdditionsSoundBuilder().apply(block).build()
-    }
-
-    fun music(music: net.minestom.server.sound.Music, weight: Int = 1) {
-        this.music.add(BiomeEffects.WeightedMusic(music, weight))
-    }
 
     fun build(): BiomeEffects {
         return BiomeEffects.builder()
-            .fogColor(fogColor)
-            .skyColor(skyColor)
             .waterColor(waterColor)
-            .waterFogColor(waterFogColor)
             .foliageColor(foliageColor)
+            .dryFoliageColor(dryFoliageColor)
             .grassColor(grassColor)
             .grassColorModifier(grassColorModifier)
-            .biomeParticle(particle)
-            .ambientSound(ambientSound)
-            .moodSound(moodSound)
-            .additionsSound(additionsSound)
-            .music(if (music.isEmpty()) null else music)
-            .musicVolume(musicVolume)
             .build()
     }
 }
@@ -81,12 +91,12 @@ class MoodSoundBuilder {
     var blockSearchExtent: Int = 8
     var offset: Double = 2.0
 
-    fun build() = BiomeEffects.MoodSound(sound, tickDelay, blockSearchExtent, offset)
+    fun build() = AmbientSounds.Mood(sound, tickDelay, blockSearchExtent, offset)
 }
 
 class AdditionsSoundBuilder {
     var sound: SoundEvent = SoundEvent.AMBIENT_CAVE
     var tickChance: Double = 0.01
 
-    fun build() = BiomeEffects.AdditionsSound(sound, tickChance)
+    fun build() = AmbientSounds.Additions(sound, tickChance)
 }
