@@ -1,6 +1,6 @@
 plugins {
     `maven-publish`
-    kotlin("jvm") version "2.3.0-dev-9673"
+    kotlin("jvm") version "2.3.0"
 }
 
 group = "me.znotchill"
