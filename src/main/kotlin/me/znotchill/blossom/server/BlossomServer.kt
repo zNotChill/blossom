@@ -21,13 +21,11 @@ import org.slf4j.LoggerFactory
 
 open class BlossomServer(
     name: String = "Server",
-    auth: Boolean = true
+    auth: Auth = Auth.Online()
 ) {
     val logger: Logger = LoggerFactory.getLogger(name)
-    val authEnum = if (auth) Auth.Online() else Auth.Offline()
-
     val server: MinecraftServer = MinecraftServer.init(
-        authEnum as Auth
+        auth
     )
 
     val scheduler: SchedulerManager
