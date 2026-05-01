@@ -34,6 +34,8 @@ internal object TestServer : BlossomServer(
         bareEssential<BlockPicker> {
             config.gameModes = listOf(GameMode.CREATIVE)
         }
+
+        once<PlayerLoadedEvent> {  }
     }
 }
 
