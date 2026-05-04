@@ -86,6 +86,10 @@ open class BlossomServer(
     val players: Collection<Player>
         get() = MinecraftServer.getConnectionManager().onlinePlayers
 
+    fun registerCommand(command: Command) {
+        commands.register(command)
+    }
+
     //
     // Server Lifecycle
     //
