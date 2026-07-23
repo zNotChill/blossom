@@ -8,7 +8,7 @@ version = project.property("version")!!
 
 repositories {
     mavenCentral()
-    maven("https://repo.znotchill.me/repository/maven-releases/")
+    maven("https://repo.znotchill.me/releases")
     maven("https://redirector.kotlinlang.org/maven/bootstrap")
     maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
         content {
@@ -45,7 +45,7 @@ publishing {
     repositories {
         maven {
             name = "znotchill"
-            url = uri("https://repo.znotchill.me/repository/maven-releases/")
+            url = uri("https://repo.znotchill.me/releases")
             credentials {
                 username = findProperty("zRepoUsername") as String? ?: System.getenv("MAVEN_USER")
                 password = findProperty("zRepoPassword") as String? ?: System.getenv("MAVEN_PASS")
