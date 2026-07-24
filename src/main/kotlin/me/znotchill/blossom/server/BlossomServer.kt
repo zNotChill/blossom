@@ -1,6 +1,7 @@
 package me.znotchill.blossom.server
 
 import me.znotchill.blossom.server.essentials.classes.Essential
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import net.minestom.server.Auth
 import net.minestom.server.MinecraftServer
 import net.minestom.server.advancements.AdvancementManager
@@ -42,8 +43,8 @@ open class BlossomServer(
     auth: Auth = Auth.Online()
 ) {
 
-    /** SLF4J logger scoped to this server instance. */
-    val logger: Logger = LoggerFactory.getLogger(name)
+    /** [ComponentLogger] scoped to this server instance. */
+    val logger: ComponentLogger = ComponentLogger.logger(name)
 
     /**
      * The underlying Minestom server instance.

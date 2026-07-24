@@ -17,7 +17,7 @@ class TextBuilder(
     var strikethrough: Boolean = false
     var obfuscate: Boolean = false
 
-    var clickEvent: ClickEvent? = null
+    var clickEvent: ClickEvent<*>? = null
 
     private var tooltip: Component = Component.empty()
 

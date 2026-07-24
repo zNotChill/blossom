@@ -4,7 +4,7 @@ import net.kyori.adventure.dialog.DialogLike
 import net.kyori.adventure.text.event.ClickEvent
 
 class OnClickBuilder {
-    var event: ClickEvent? = null
+    var event: ClickEvent<*>? = null
 
     fun runCommand(command: String) {
         event = ClickEvent.runCommand(command)
