@@ -19,9 +19,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-    implementation("org.slf4j:slf4j-api:2.0.17")
+    compileOnly("org.slf4j:slf4j-api:2.0.17")
     compileOnly("net.minestom:minestom:${project.property("minestom_version")}")
+    compileOnly("net.kyori:adventure-text-minimessage:4.26.1")
 }
 
 tasks.test {

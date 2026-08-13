@@ -1,10 +1,13 @@
 package me.znotchill.blossom.server
 
 import me.znotchill.blossom.server.essentials.classes.Essential
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minestom.server.Auth
 import net.minestom.server.MinecraftServer
 import net.minestom.server.advancements.AdvancementManager
+import net.minestom.server.adventure.bossbar.BossBarManager
 import net.minestom.server.command.CommandManager
 import net.minestom.server.command.builder.Command
 import net.minestom.server.entity.Player
@@ -18,8 +21,6 @@ import net.minestom.server.registry.DynamicRegistry
 import net.minestom.server.scoreboard.TeamManager
 import net.minestom.server.timer.SchedulerManager
 import net.minestom.server.world.biome.Biome
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  * Blossom's core wrapper around Minestom's [MinecraftServer].
@@ -79,15 +80,17 @@ open class BlossomServer(
     val biomes: DynamicRegistry<Biome> = MinecraftServer.getBiomeRegistry()
     val advancements: AdvancementManager = MinecraftServer.getAdvancementManager()
     val bannerPatterns: DynamicRegistry<BannerPattern> = MinecraftServer.getBannerPatternRegistry()
-    val bossbars: net.minestom.server.adventure.bossbar.BossBarManager = MinecraftServer.getBossBarManager()
+    val bossbars: BossBarManager = MinecraftServer.getBossBarManager()
     val teams: TeamManager = MinecraftServer.getTeamManager()
     val recipes: RecipeManager = MinecraftServer.getRecipeManager()
+
+    val mm = MiniMessage.miniMessage()
 
     /** All players currently connected to the server. */
     val players: Collection<Player>
         get() = MinecraftServer.getConnectionManager().onlinePlayers
 
-    fun registerCommand(command: Command) {
+    open fun registerCommand(command: Command) {
         commands.register(command)
     }
 
@@ -106,7 +109,7 @@ open class BlossomServer(
      * @param address The bind address. Defaults to `"0.0.0.0"`.
      * @param port The port to listen on. Defaults to `25565`.
      */
-    fun start(
+    open fun start(
         address: String = "0.0.0.0",
         port: Int = 25565
     ) {
@@ -137,9 +140,22 @@ open class BlossomServer(
      * onShutdown { database.close() }
      * ```
      */
-    fun onShutdown(block: () -> Unit) {
+    open fun onShutdown(block: () -> Unit) {
         Runtime.getRuntime().addShutdownHook(Thread(block))
     }
+
+    //
+    // Broadcast
+    //
+
+    open fun broadcast(string: String) {
+        val component = mm.deserialize(string)
+        players.forEach { it.sendMessage(component) }
+    }
+
+    open fun broadcast(component: Component) =
+        players.forEach { it.sendMessage(component) }
+
 
     //
     // Essentials
@@ -158,7 +174,7 @@ open class BlossomServer(
      * Use [bareEssential] for essentials that need configuration,
      * or [addEssential] when you already hold a constructed instance.
      */
-    fun addEssential(essential: Essential<*>) {
+    open fun addEssential(essential: Essential<*>) {
         if (essentials.contains(essential)) return
         essentials.add(essential)
     }
